@@ -4,8 +4,7 @@ Feature: Basket calculations of cheapest products
     Given user is logged in with valid credentials
       | email                            | password |
       | jeltobriuh.programming@gmail.com | Fisher77 |
-   # And user adds to the basket products
-    #  | Snickers |
-     # | Skittles                         |
-    #When user enters into shopping cart
-    #Then total sum calculated "correctly"
+    And item "Snickers" with less price is added to the basket
+    And item "Skittles" with less price is added to the basket
+    When user enters into shopping cart
+    Then total sum calculated "correctly"

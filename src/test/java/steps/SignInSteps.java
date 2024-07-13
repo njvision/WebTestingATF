@@ -3,11 +3,14 @@ package steps;
 import hooks.Hooks;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import org.openqa.selenium.WebDriver;
 import pages.HomePage;
 import pages.SignInEmailPage;
 import pages.SignInPasswordPage;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +23,7 @@ public class SignInSteps {
     private HomePage homePage;
     private SignInEmailPage signInEmailPage;
     private SignInPasswordPage signInPasswordPage;
+    private HashMap<String, Float> minPriceOfItems = new HashMap<>();
 
     public SignInSteps() {
         this.driver = Hooks.driver;
@@ -46,4 +50,24 @@ public class SignInSteps {
         String actualUserName = homePage.getUserName();
         assertThat(actualUserName, containsString("Bob"));
     }
+
+    @Given("item {string} with less price is added to the basket")
+    public void productsAreAddedToTheBasket(String item) {
+        homePage.searchProduct(item);
+        float minPrice = homePage.getItemWithLessPrice();
+        minPriceOfItems.put(item, minPrice);
+    }
+
+    @When("user enters into shopping cart")
+    public void userEntersIntoShoppingCart() {
+        homePage.clickCartButton();
+    }
+
+    @Then("total sum calculated {string}")
+    public void checkTotalSumCalculated(String state) {
+        float totalSumExpected = minPriceOfItems.values().stream().reduce(0f,Float::sum);
+
+    }
+
+
 }
