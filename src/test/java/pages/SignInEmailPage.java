@@ -12,6 +12,9 @@ public class SignInEmailPage extends BasePage{
     @FindBy(id = "continue")
     private WebElement continueButton;
 
+    @FindBy(className = "a-box")
+    private WebElement title;
+
     public SignInEmailPage(WebDriver driver) {
         super(driver);
     }
@@ -23,4 +26,5 @@ public class SignInEmailPage extends BasePage{
     public void clickContinueButton() {
         continueButton.click();
     }
+
 }

@@ -2,28 +2,19 @@ package pages;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.checkerframework.checker.units.qual.min;
 import org.openqa.selenium.By;
-import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import steps.BasicSteps;
-
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class HomePage extends BasePage {
 
-    private static final Logger logger = LogManager.getLogger(BasicSteps.class);
+    private static final Logger logger = LogManager.getLogger(HomePage.class);
 
     @FindBy(id = "nav-link-accountList")
     private WebElement signInOrHelloButton;
@@ -89,8 +80,18 @@ public class HomePage extends BasePage {
         cart.click();
     }
 
+    public String getCartItemNumber() {
+       return cart.getText();
+    }
+
+    public WebElement getCart() {
+       return cart;
+    }
+
     private float transformStringToFloat(String input) {
-        String cleanedInput = input.replace("$", "").replace("\n", ".");
+        String cleanedInput = input.replace("$", "")
+                .replace("\n", ".")
+                .replace(",", "");
 
         if (!cleanedInput.isEmpty()) {
             try {

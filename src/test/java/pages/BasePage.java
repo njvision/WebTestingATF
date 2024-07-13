@@ -11,7 +11,4 @@ public class BasePage {
         PageFactory.initElements(driver, this);
     }
 
-    public String getPageTitle() {
-        return driver.getTitle();
-    }
 }
