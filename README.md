@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project is an automation testing framework designed for testing web applications. It utilizes Selenium WebDriver for browser automation, Cucumber for Behavior-Driven Development (BDD), and JUnit for test execution. The framework supports running tests on multiple operating systems (Windows, Linux, macOS) and includes features for logging, page object management, and handling dynamic web elements.
+This project is an automation testing framework designed for testing web applications. It utilizes Selenium WebDriver for browser automation, Cucumber for Behavior-Driven Development (BDD), JUnit for test execution, and Java as programming language. The framework supports running tests on multiple operating systems (Windows, Linux, macOS).
 
 ## Table of Contents
 
@@ -19,7 +19,7 @@ This project is an automation testing framework designed for testing web applica
 
 - Java JDK 8 or higher
 - Maven 3.6.3 or higher
-- ChromeDriver
+- ChromeDriver or FirefoxDriver
 - Supported OS: Windows, Linux, macOS
 
 ## Setup

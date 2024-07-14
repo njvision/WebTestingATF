@@ -5,7 +5,6 @@ import io.cucumber.java.Before;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import pages.CartPage;
 
@@ -43,9 +42,6 @@ public class Hooks {
 
     @After
     public void tearDown() {
-        if (cartPage.deleteButton.isDisplayed()) {
-        cartPage.clickDeleteButton(driver);
-        }
         if (driver != null) {
             logger.info("Closing WebDriver");
             driver.quit();

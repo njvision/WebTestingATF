@@ -53,12 +53,14 @@ public class CartPage extends BasePage {
 
         for (WebElement deleteButton : deleteButtons) {
             try {
-                deleteButton.click();
-                driver.navigate().refresh();
-                clickDeleteButton(driver);
+            deleteButton.click();
+            logger.info("The item is deleted.");
+            driver.navigate().refresh();
+            clickDeleteButton(driver);
             } catch (StaleElementReferenceException e) {
-                System.out.println("Element is stale. Retrying...");
-                clickDeleteButton(driver);
+//                System.out.println("Element is stale. Retrying...");
+//                clickDeleteButton(driver);
+                logger.info("Nothing to delete");
             }
         }
     }
