@@ -25,7 +25,7 @@ This project is an automation testing framework designed for testing web applica
 
 - Selenium Java 4.22.0
 - Cucumber Java 7.18.0
-- Cucumber JUnit 7.18.0 (test scope)
+- Cucumber JUnit 7.18.0
 - Maven Cucumber Reporting 5.8.1
 - Log4j 2.17.2
 - Hamcrest 1.3
