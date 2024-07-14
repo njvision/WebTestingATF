@@ -6,7 +6,7 @@ import org.openqa.selenium.support.FindBy;
 
 public class RegistrationPage extends BasePage{
     @FindBy(className = "a-spacing-small")
-    private WebElement title;
+    public WebElement title;
 
     public RegistrationPage(WebDriver driver) {
         super(driver);

@@ -4,16 +4,16 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class SignInEmailPage extends BasePage{
+public class SignInEmailPage extends BasePage {
 
     @FindBy(id = "ap_email")
-    private WebElement usernameField;
+    public WebElement usernameField;
 
     @FindBy(id = "continue")
-    private WebElement continueButton;
+    public WebElement continueButton;
 
     @FindBy(className = "a-box")
-    private WebElement title;
+    public WebElement title;
 
     public SignInEmailPage(WebDriver driver) {
         super(driver);

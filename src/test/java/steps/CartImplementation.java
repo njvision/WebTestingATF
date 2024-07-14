@@ -6,7 +6,11 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
 import java.util.List;
 import java.util.Map;
 
@@ -46,16 +50,29 @@ public class CartImplementation extends BaseImplementation {
         assertThat(actualUserName, containsString("Bob"));
     }
 
-    @Given("item {string} with less price is added to the basket")
-    public void productsAreAddedToTheBasket(String item) {
-        homePage.searchProduct(item);
-        float minPrice = homePage.getItemWithLessPrice();
-        minPriceOfItems.put(item, minPrice);
+    @Given("item with the cheapest price is in the basket")
+    public void productsAreAddedToTheBasket(DataTable items) {
+        List<String> products = items.asList(String.class);
+        for (String product : products) {
+            homePage.searchProduct(product);
+            float minPrice = homePage.getItemWithLessPrice();
+            minPriceOfItems.put(product, minPrice);
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", homePage.cart);
+            wait.until(ExpectedConditions.not(ExpectedConditions.textToBePresentInElementLocated(By.id("nav-cart-count-container"), String.valueOf(minPriceOfItems.size()-1))));
+        }
+        wait.until(ExpectedConditions.elementToBeClickable(homePage.cart));
     }
 
     @When("user enters into shopping cart")
     public void userEntersIntoShoppingCart() {
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", homePage.getCart());
+        try {
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[data-action-type='DISMISS']")));
+            homePage.clickDismissButton();
+            logger.info("Dismissed button clicked");
+        } catch (Exception e) {
+            logger.info("Dismissed button is not visible, no action taken.");
+        }
+        wait.until(ExpectedConditions.elementToBeClickable(homePage.cart));
         homePage.clickCartButton();
     }
 
@@ -76,7 +93,7 @@ public class CartImplementation extends BaseImplementation {
         }
     }
 
-    @Then("total sum calculated is {string} calculated")
+    @Then("total sum is {string} calculated")
     public void checkTotalSumCalculated(String state) {
         float totalSumExpected = minPriceOfItems.values().stream().reduce(0f, Float::sum);
 

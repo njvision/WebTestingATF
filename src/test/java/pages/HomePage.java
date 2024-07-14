@@ -7,6 +7,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,19 +18,22 @@ public class HomePage extends BasePage {
     private static final Logger logger = LogManager.getLogger(HomePage.class);
 
     @FindBy(id = "nav-link-accountList")
-    private WebElement signInOrHelloButton;
+    public WebElement signInOrHelloButton;
 
     @FindBy(id = "twotabsearchtextbox")
-    private WebElement searchTextField;
+    public WebElement searchTextField;
 
     @FindBy(id = "nav-search-submit-button")
-    private WebElement searchButton;
+    public WebElement searchButton;
 
     @FindBy(xpath = "//span[@data-component-type ='s-search-results']")
-    private WebElement productList;
+    public WebElement productList;
 
-    @FindBy(id = "nav-cart-count-container")
-    private WebElement cart;
+    @FindBy(id = "nav-cart")
+    public WebElement cart;
+
+    @FindBy(css = "input[data-action-type='DISMISS']")
+    public WebElement dismissButton;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -81,11 +85,7 @@ public class HomePage extends BasePage {
     }
 
     public String getCartItemNumber() {
-       return cart.getText();
-    }
-
-    public WebElement getCart() {
-       return cart;
+        return cart.getText();
     }
 
     private float transformStringToFloat(String input) {
@@ -101,5 +101,9 @@ public class HomePage extends BasePage {
             }
         }
         return 0;
+    }
+
+    public void clickDismissButton() {
+        dismissButton.click();
     }
 }

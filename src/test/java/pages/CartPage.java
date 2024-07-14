@@ -10,21 +10,24 @@ import org.openqa.selenium.support.FindBy;
 
 import java.util.List;
 
-public class CartPage extends BasePage{
+public class CartPage extends BasePage {
 
     private static final Logger logger = LogManager.getLogger(CartPage.class);
 
     @FindBy(id = "sc-subtotal-label-activecart")
-    private WebElement subtotalLabel;
+    public WebElement subtotalLabel;
 
     @FindBy(id = "sc-subtotal-amount-activecart")
-    private WebElement subtotalAmount;
+    public WebElement subtotalAmount;
 
     @FindBy(xpath = "//div[@data-name='Active Items']")
-    private WebElement cartItems;
+    public WebElement cartItems;
 
     @FindBy(id = "sc-buy-box-ptc-button")
-    private WebElement checkout;
+    public WebElement checkout;
+
+    @FindBy(css = "input[value='Delete']")
+    public WebElement deleteButton;
 
     public CartPage(WebDriver driver) {
         super(driver);

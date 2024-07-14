@@ -9,7 +9,6 @@ import org.junit.runner.RunWith;
         features = "src/test/java/features",
         glue = {"steps", "hooks"},
         plugin = "json:target/cucumber.json"
-
 )
 public class TestRunner {
 }

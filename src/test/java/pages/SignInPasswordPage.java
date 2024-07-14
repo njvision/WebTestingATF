@@ -4,13 +4,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class SignInPasswordPage extends BasePage{
+public class SignInPasswordPage extends BasePage {
 
     @FindBy(id = "ap_password")
-    private WebElement passwordField;
+    public WebElement passwordField;
 
     @FindBy(id = "signInSubmit")
-    private WebElement signInButton;
+    public WebElement signInButton;
 
     public SignInPasswordPage(WebDriver driver) {
         super(driver);

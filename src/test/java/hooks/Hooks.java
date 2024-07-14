@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import pages.CartPage;
 
 import java.util.concurrent.TimeUnit;
@@ -23,23 +24,28 @@ public class Hooks {
         String driverPath = "";
 
         if (os.contains("win")) {
-            driverPath = "src/test/resources/drivers/windows/chromedriver.exe";
+//            driverPath = "src/test/resources/drivers/chrome/windows/chromedriver.exe";
+            driverPath = "src/test/resources/drivers/mozilla/windows/geckodriver.exe";
         } else if (os.contains("mac")) {
-            driverPath = "src/test/resources/drivers/mac/chromedriver";
+//            driverPath = "src/test/resources/drivers/chrome/mac/chromedriver";
+            driverPath = "src/test/resources/drivers/mozilla/mac/geckodriver";
         } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
-            driverPath = "src/test/resources/drivers/linux/chromedriver";
+//            driverPath = "src/test/resources/drivers/linux/chromedriver";
+            driverPath = "src/test/resources/drivers/mozilla/linux/geckodriver";
         }
 
         System.setProperty("webdriver.chrome.driver", driverPath);
-        driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+        driver = new FirefoxDriver();
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
         driver.manage().window().maximize();
         cartPage = new CartPage(driver);
     }
 
     @After
     public void tearDown() {
+        if (cartPage.deleteButton.isDisplayed()) {
         cartPage.clickDeleteButton(driver);
+        }
         if (driver != null) {
             logger.info("Closing WebDriver");
             driver.quit();

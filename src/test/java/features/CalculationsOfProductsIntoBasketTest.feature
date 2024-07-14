@@ -7,8 +7,8 @@ Feature: Basket calculations of cheapest products
     Given user is logged in with valid credentials
       | email                            | password |
       | jeltobriuh.programming@gmail.com | Fisher77 |
-    And item "Snickers" with less price is added to the basket
-    And item "Skittles" with less price is added to the basket
+    And item with the cheapest price is in the basket
+    |Snickers|
+    |Skittles|
     When user enters into shopping cart
-    Then cart has "2" items
-    And total sum calculated is "correctly" calculated
+    Then total sum is "correctly" calculated

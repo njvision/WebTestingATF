@@ -13,7 +13,7 @@ import java.time.Duration;
 import java.util.HashMap;
 
 public class BaseImplementation {
-    private WebDriverWait wait;
+    protected WebDriverWait wait;
 
     protected WebDriver driver;
     protected HomePage homePage;
