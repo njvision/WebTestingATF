@@ -29,7 +29,7 @@ public class BaseImplementation {
         this.homePage = new HomePage(driver);
         this.signInEmailPage = new SignInEmailPage(driver);
         this.signInPasswordPage = new SignInPasswordPage(driver);
-        this.cartPage = Hooks.cartPage;
+        this.cartPage = new CartPage(driver);
         this.registrationPage = new RegistrationPage(driver);
     }
 }

@@ -7,7 +7,6 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import pages.CartPage;
 
 import java.util.concurrent.TimeUnit;
 
@@ -16,7 +15,6 @@ public class Hooks {
     private static final Logger logger = LogManager.getLogger(Hooks.class);
 
     public static WebDriver driver;
-    public static CartPage cartPage;
 
     @Before(value = "@CalculationsCheck")
     public void setUpChromeDriver() {
@@ -65,6 +63,5 @@ public class Hooks {
 
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
         driver.manage().window().maximize();
-        cartPage = new CartPage(driver);
     }
 }

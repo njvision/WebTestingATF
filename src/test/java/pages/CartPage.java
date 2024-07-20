@@ -7,7 +7,6 @@ import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.List;
 
@@ -59,8 +58,6 @@ public class CartPage extends BasePage {
             driver.navigate().refresh();
             clickDeleteButton(driver);
             } catch (StaleElementReferenceException e) {
-//                System.out.println("Element is stale. Retrying...");
-//                clickDeleteButton(driver);
                 logger.info("Nothing to delete");
             }
         }
