@@ -3,6 +3,7 @@ Feature: Cart check
   Background: Access home page
     Given user access home page
 
+  @CalculationsCheck
   Scenario: Check results of added products into the basket by login user
     Given user is logged in with valid credentials
       | email                            | password |
@@ -13,6 +14,7 @@ Feature: Cart check
     When user enters into shopping cart
     Then total sum is "correctly" calculated
 
+  @RedirectionCheck
   Scenario: Checkout by not login in user
     And item with the cheapest price is in the basket
       | snickers |
