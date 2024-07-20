@@ -7,6 +7,7 @@ import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class CartPage extends BasePage {
     @FindBy(xpath = "//div[@data-name='Active Items']")
     public WebElement cartItems;
 
-    @FindBy(id = "sc-buy-box-ptc-button")
+    @FindBy(id = "desktop-ptc-button-celWidget")
     public WebElement checkout;
 
     @FindBy(css = "input[value='Delete']")

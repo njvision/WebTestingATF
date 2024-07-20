@@ -92,6 +92,8 @@ public class CartImplementation extends BaseImplementation {
 
     @When("unauthorised user trys to checkout")
     public void unauthorisedUserTrysToCheckout() {
+        wait.until(ExpectedConditions.visibilityOf(cartPage.checkout));
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("desktop-ptc-button-celWidget")));
         cartPage.clickCheckoutButton();
     }
 
@@ -125,6 +127,7 @@ public class CartImplementation extends BaseImplementation {
 
     @Then("user is redirected to the registration page")
     public void userIsRedirectedToTheRegistrationPage() {
+        wait.until(ExpectedConditions.not(ExpectedConditions.urlToBe("https://www.amazon.com/gp/cart/view.html?ref_=nav_cart")));
         assertThat(registrationPage.getTitlePage(), equalTo("Create account"));
     }
 }
