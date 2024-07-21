@@ -60,7 +60,7 @@ public class CartImplementation extends BaseImplementation {
         List<String> products = items.asList(String.class);
         for (String product : products) {
             homePage.searchProduct(product);
-            float minPrice = homePage.getItemWithLessPrice();
+            float minPrice = homePage.getItemWithCheapestPrice();
             minPriceOfItems.put(product, minPrice);
             ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", homePage.cart);
             wait.until(ExpectedConditions.not(ExpectedConditions.textToBePresentInElementLocated(By.id("nav-cart-count-container"), String.valueOf(minPriceOfItems.size() - 1))));
@@ -118,9 +118,9 @@ public class CartImplementation extends BaseImplementation {
         float totalSumExpected = minPriceOfItems.values().stream().reduce(0f, Float::sum);
 
         if (state.equals("correctly")) {
-            assertThat(cartPage.getSubtotalAmount(), equalTo(String.valueOf(totalSumExpected)));
+            assertThat(cartPage.getSubtotalAmount(), equalTo(String.format("%.2f", totalSumExpected)));
         } else if (state.equals("wrong")) {
-            assertThat(cartPage.getSubtotalAmount(), not(String.valueOf(totalSumExpected)));
+            assertThat(cartPage.getSubtotalAmount(), not(String.format("%.2f", totalSumExpected)));
         } else {
             logger.info("Is not correct state given in the step");
             throw new IllegalArgumentException("Incorrect state");

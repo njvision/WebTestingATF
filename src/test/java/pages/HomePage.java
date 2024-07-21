@@ -53,10 +53,10 @@ public class HomePage extends BasePage {
         searchButton.click();
     }
 
-    public float getItemWithLessPrice() {
+    public float getItemWithCheapestPrice() {
         List<WebElement> productsWithAddButton = productList.findElements(By.xpath("//div[@data-csa-c-content-id='s-search-add-to-cart-action']"));
 
-        Map<WebElement, Float> productPriceMap = new HashMap<>();
+        Map<WebElement, Float> productPriceMap  = new HashMap<>();
 
         for (WebElement button : productsWithAddButton) {
             try {

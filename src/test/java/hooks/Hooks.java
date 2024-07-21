@@ -2,12 +2,22 @@ package hooks;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
+import net.sourceforge.tess4j.Tesseract;
+import net.sourceforge.tess4j.TesseractException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.io.FileHandler;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class Hooks {
@@ -17,12 +27,12 @@ public class Hooks {
     public static WebDriver driver;
 
     @Before(value = "@CalculationsCheck")
-    public void setUpChromeDriver() {
+    public void setUpChromeDriver() throws IOException, InterruptedException {
         chooseWebDrive("chromedriver");
     }
 
     @Before(value = "@RedirectionCheck")
-    public void setUpFirefoxDriver() {
+    public void setUpFirefoxDriver() throws IOException, InterruptedException {
         chooseWebDrive("geckodriver");
     }
 
@@ -34,7 +44,7 @@ public class Hooks {
         }
     }
 
-    private void chooseWebDrive(String webDriver) {
+    private void chooseWebDrive(String webDriver) throws IOException, InterruptedException {
         String os = System.getProperty("os.name").toLowerCase();
         String driverPath = "";
 
@@ -47,6 +57,10 @@ public class Hooks {
                 driverPath = "src/test/resources/drivers/linux/chromedriver";
             }
             System.setProperty("webdriver.chrome.driver", driverPath);
+//            ChromeOptions options = new ChromeOptions();
+//            options.addArguments("--headless");
+//            options.addArguments("--disable-gpu");
+//            driver = new ChromeDriver(options);
             driver = new ChromeDriver();
         }
         if (webDriver.equals("geckodriver")) {
@@ -58,10 +72,61 @@ public class Hooks {
                 driverPath = "src/test/resources/drivers/mozilla/linux/geckodriver";
             }
             System.setProperty("webdriver.geckodriver.driver", driverPath);
+//            FirefoxOptions options = new FirefoxOptions();
+//            options.addArguments("--headless");
+//            options.addArguments("--disable-gpu");
+//            driver = new FirefoxDriver(options);
+
             driver = new FirefoxDriver();
         }
 
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
         driver.manage().window().maximize();
+        driver.get("https://amazon.com/");
+
+        if (isCaptchaPresent()) {
+            solveCaptcha();
+        }
+    }
+
+    private boolean isCaptchaPresent() {
+        try {
+            driver.findElement(By.id("captchacharacters"));
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private void solveCaptcha() throws IOException, InterruptedException {
+        WebElement captchaImageElement = driver.findElement(By.tagName("img"));
+
+        File captchaImage = captchaImageElement.getScreenshotAs(OutputType.FILE);
+
+        File captchaImageFile = new File("src/test/resources/captcha/captcha.png");
+        FileHandler.copy(captchaImage, captchaImageFile);
+
+        String captchaText = extractTextFromImage(captchaImageFile);
+
+        WebElement captchaInputField = driver.findElement(By.id("captchacharacters"));
+        captchaInputField.sendKeys(captchaText);
+
+        WebElement submitButton = driver.findElement(By.tagName("button"));
+        submitButton.click();
+
+        Thread.sleep(5000);
+    }
+
+    private String extractTextFromImage(File imageFile) {
+        Tesseract tesseract = new Tesseract();
+
+        tesseract.setDatapath("src/test/resources/tessdata");
+
+        try {
+            return tesseract.doOCR(imageFile);
+        } catch (TesseractException e) {
+            logger.error("Error during OCR processing", e);
+            return "";
+        }
     }
 }
