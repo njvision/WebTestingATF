@@ -12,6 +12,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +24,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class CartImplementation extends BaseImplementation {
 
     private static final Logger logger = LogManager.getLogger(CartImplementation.class);
+    protected HashMap<String, Float> minPriceOfItems = new HashMap<>();
 
     public CartImplementation() {
         super();
@@ -35,13 +37,15 @@ public class CartImplementation extends BaseImplementation {
 
     @Given("user is logged in with valid credentials")
     public void logInWithValidCredentials(DataTable dataTable) {
-        List<Map<String, String>> data = dataTable.asMaps(String.class, String.class);
+        Map<String, String> userData = dataTable.asMap(String.class, String.class);
         String email = "";
         String password = "";
-        for (Map<String, String> row : data) {
-            email = row.get("email");
-            password = row.get("password");
+
+        for (Map.Entry<String, String> entry : userData.entrySet()) {
+            email = entry.getKey();
+            password = entry.getValue();
         }
+
         homePage.clickSignInButton();
         signInEmailPage.enterUsername(email);
         signInEmailPage.clickContinueButton();

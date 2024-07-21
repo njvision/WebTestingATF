@@ -21,7 +21,6 @@ public class BaseImplementation {
     protected SignInPasswordPage signInPasswordPage;
     protected CartPage cartPage;
     protected RegistrationPage registrationPage;
-    protected HashMap<String, Float> minPriceOfItems = new HashMap<>();
 
     public BaseImplementation() {
         this.driver = Hooks.driver;
