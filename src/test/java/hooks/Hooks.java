@@ -11,9 +11,7 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.io.FileHandler;
 
 import java.io.File;
@@ -39,6 +37,9 @@ public class Hooks {
     @After
     public void tearDown() {
         if (driver != null) {
+            logger.info("Deleting all cookies");
+            driver.manage().deleteAllCookies();
+
             logger.info("Closing WebDriver");
             driver.quit();
         }
@@ -57,10 +58,6 @@ public class Hooks {
                 driverPath = "src/test/resources/drivers/linux/chromedriver";
             }
             System.setProperty("webdriver.chrome.driver", driverPath);
-//            ChromeOptions options = new ChromeOptions();
-//            options.addArguments("--headless");
-//            options.addArguments("--disable-gpu");
-//            driver = new ChromeDriver(options);
             driver = new ChromeDriver();
         }
         if (webDriver.equals("geckodriver")) {
@@ -72,16 +69,14 @@ public class Hooks {
                 driverPath = "src/test/resources/drivers/mozilla/linux/geckodriver";
             }
             System.setProperty("webdriver.geckodriver.driver", driverPath);
-//            FirefoxOptions options = new FirefoxOptions();
-//            options.addArguments("--headless");
-//            options.addArguments("--disable-gpu");
-//            driver = new FirefoxDriver(options);
-
             driver = new FirefoxDriver();
         }
 
+        logger.info(webDriver + " is initialized");
+
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
         driver.manage().window().maximize();
+
         driver.get("https://amazon.com/");
 
         if (isCaptchaPresent()) {
@@ -92,8 +87,10 @@ public class Hooks {
     private boolean isCaptchaPresent() {
         try {
             driver.findElement(By.id("captchacharacters"));
+            logger.info("The captcha is present");
             return true;
         } catch (Exception e) {
+            logger.info("The captcha isn't present");
             return false;
         }
     }
@@ -114,7 +111,7 @@ public class Hooks {
         WebElement submitButton = driver.findElement(By.tagName("button"));
         submitButton.click();
 
-        Thread.sleep(5000);
+//        Thread.sleep(5000);
     }
 
     private String extractTextFromImage(File imageFile) {
