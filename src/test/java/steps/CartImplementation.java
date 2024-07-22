@@ -99,6 +99,7 @@ public class CartImplementation extends BaseImplementation {
         wait.until(ExpectedConditions.visibilityOf(cartPage.checkout));
         wait.until(ExpectedConditions.elementToBeClickable(By.id("desktop-ptc-button-celWidget")));
         cartPage.clickCheckoutButton();
+        logger.info("The Checkout button is clicked");
     }
 
     @Then("cart has {string} items")

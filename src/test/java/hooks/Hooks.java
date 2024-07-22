@@ -7,11 +7,14 @@ import net.sourceforge.tess4j.TesseractException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.io.FileHandler;
 
 import java.io.File;
@@ -58,7 +61,9 @@ public class Hooks {
                 driverPath = "src/test/resources/drivers/linux/chromedriver";
             }
             System.setProperty("webdriver.chrome.driver", driverPath);
-            driver = new ChromeDriver();
+            ChromeOptions chromeOptions = new ChromeOptions();
+            chromeOptions.addArguments("--incognito");
+            driver = new ChromeDriver(chromeOptions);
         }
         if (webDriver.equals("geckodriver")) {
             if (os.contains("win")) {
@@ -69,7 +74,9 @@ public class Hooks {
                 driverPath = "src/test/resources/drivers/mozilla/linux/geckodriver";
             }
             System.setProperty("webdriver.geckodriver.driver", driverPath);
-            driver = new FirefoxDriver();
+            FirefoxOptions firefoxOptions = new FirefoxOptions();
+            firefoxOptions.addArguments("-private");
+            driver = new FirefoxDriver(firefoxOptions);
         }
 
         logger.info(webDriver + " is initialized");
@@ -79,7 +86,7 @@ public class Hooks {
 
         driver.get("https://amazon.com/");
 
-        if (isCaptchaPresent()) {
+        while(isCaptchaPresent()) {
             solveCaptcha();
         }
     }
@@ -108,8 +115,12 @@ public class Hooks {
         WebElement captchaInputField = driver.findElement(By.id("captchacharacters"));
         captchaInputField.sendKeys(captchaText);
 
-        WebElement submitButton = driver.findElement(By.tagName("button"));
-        submitButton.click();
+        try {
+            WebElement submitButton = driver.findElement(By.tagName("button"));
+            submitButton.click();
+        } catch (NoSuchElementException e) {
+            logger.info(e.getMessage());
+        }
 
 //        Thread.sleep(5000);
     }
